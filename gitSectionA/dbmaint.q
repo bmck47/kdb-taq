@@ -8,6 +8,7 @@ ren:{system$[WIN;"move ";"mv "],pth[x]," ",pth y}
 here:{hsym`$system$[WIN;"cd";"pwd"]}
 \d .
 
+/add column function
 add1col:{[tabledir;colname;defaultvalue]
  if[not colname in ac:allcols tabledir;
   stdout"adding column ",(string colname)," (type ",(string type defaultvalue),") to `",string tabledir;
@@ -15,18 +16,23 @@ add1col:{[tabledir;colname;defaultvalue]
   .[(`)sv tabledir,colname;();:;num#defaultvalue];
   @[tabledir;`.d;,;colname]]}
 
+/get columns function
 allcols:{[tabledir]get tabledir,`.d}
+
+
 
 allpaths:{[dbdir;table]
  files:key dbdir;
  if[any files like"par.txt";:raze allpaths[;table]each hsym each`$read0(`)sv dbdir,`par.txt];
  files@:where files like"[0-9]*";(`)sv'dbdir,'files,'table}
 
+/copy column function
 copy1col:{[tabledir;oldcol;newcol]
  if[(oldcol in ac)and not newcol in ac:allcols tabledir;
   stdout"copying ",(string oldcol)," to ",(string newcol)," in `",string tabledir;
   .os.cpy[(`)sv tabledir,oldcol;(`)sv tabledir,newcol];@[tabledir;`.d;,;newcol]]}
 
+/delete column function
 delete1col:{[tabledir;col]
  if[col in ac:allcols tabledir;
   stdout"deleting column ",(string col)," from `",string tabledir;
